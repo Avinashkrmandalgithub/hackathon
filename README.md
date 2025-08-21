@@ -52,28 +52,6 @@ A **centralized organ donation platform** with:
 
 
 
-## 📊 Matching Algorithm
-```python
-def match_score(donor, recipient):
-    score = 0
-
-    # Blood group match
-    if donor['blood'] == recipient['blood']:
-        score += 40
-
-    # Organ type
-    if donor['organ'] == recipient['organ']:
-        score += 30
-
-    # Urgency priority
-    score += recipient['urgency'] * 20
-
-    # Location proximity
-    distance = abs(donor['location'] - recipient['location'])
-    if distance < 50:
-        score += 10
-
-    return score
 
 
 
