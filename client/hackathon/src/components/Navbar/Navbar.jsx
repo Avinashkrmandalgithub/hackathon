@@ -4,6 +4,7 @@ import logo from "../../assets/hackathon logo.png"
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useState } from 'react';
 import { HiMiniXMark } from "react-icons/hi2";
+import { CiDark } from "react-icons/ci";
 
 
 const Navbar = () => {
@@ -11,7 +12,7 @@ const Navbar = () => {
    const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <>
+    
       <section className="p-3 flex justify-between items-center max-w-[1808px] mx-auto bg-white">
         <Link className="flex items-center flex-1" to="/">
           <img className="object-cover max-w-25 max-h-25" src={logo} alt="" />
@@ -28,9 +29,15 @@ const Navbar = () => {
             <Link to="#" className="font-medium hover:text-[#3238f2]">Contact</Link>
         </div>
 
-        <div className="hidden flex-1 lg:flex  justify-end">
+        <div className="hidden flex-1 lg:flex  justify-end gap-2 pr-3 items-center">
+            <CiDark size={30} className='mr-4' />
+
             <button className=" flex  items-center gap-3 border border-gray-400 px-6 py-2 rounded-lg hover:border-gray-600">
                 <span>Login</span>
+            </button>
+
+            <button className=" flex  items-center gap-3 border border-gray-400 px-4 py-2 rounded-lg hover:border-gray-600">
+                <span>Sign Up</span>
             </button>
         </div>
 
@@ -60,18 +67,22 @@ const Navbar = () => {
             </div>
 
             <div className="h-[1px] bg-gray-300 "></div>
-            
-            <button className=" flex  mt-8 items-center gap-3  px-6 py-2 rounded-lg hover:bg-gray-50 border ">
-                <span>Login</span>
-            </button>
-        </div>
+              
+              <button className=" flex ml-3 mt-8 items-center gap-3  px-8 py-2 rounded-lg hover:bg-gray-50 border ">
+                  <span>Login</span>
+              </button>
+
+              <button className=" flex ml-3 mt-8 items-center gap-3  px-6  py-2 rounded-lg hover:bg-gray-50 border ">
+                  <span>Sign Up</span>
+              </button>
+            </div>
         )}
 
 
       </section>
 
       
-    </>
+    
   )
 }
 
