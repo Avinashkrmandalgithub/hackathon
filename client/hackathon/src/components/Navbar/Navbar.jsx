@@ -14,7 +14,7 @@ const Navbar = () => {
   return (
     
       <section className="p-3 flex justify-between items-center max-w-[1808px] mx-auto bg-white">
-        <Link className="flex items-center flex-1" to="/">
+        <Link to='/' className="flex items-center flex-1" >
           <img className="object-cover max-w-25 max-h-25" src={logo} alt="" />
           <div>
             <h1 className="text-2xl font-bold ">RELIVE</h1>
@@ -23,7 +23,7 @@ const Navbar = () => {
         </Link>
 
         <div id="nav-menu" className="hidden lg:flex gap-12 ">
-            <Link to="#pricing" className="font-medium hover:text-[#3238f2]">Home</Link>
+            <Link to="/home" className="font-medium hover:text-[#3238f2]">Home</Link>
             <Link to="#" className="font-medium hover:text-[#3238f2]">How Its Work</Link>
             <Link to="#" className="font-medium hover:text-[#3238f2]">About</Link>
             <Link to="#" className="font-medium hover:text-[#3238f2]">Contact</Link>
@@ -33,11 +33,11 @@ const Navbar = () => {
             <CiDark size={30} className='mr-4' />
 
             <button className=" flex  items-center gap-3 border border-gray-400 px-6 py-2 rounded-lg hover:border-gray-600">
-                <span>Login</span>
+                <Link to='/login' >Login</Link>
             </button>
 
             <button className=" flex  items-center gap-3 border border-gray-400 px-4 py-2 rounded-lg hover:border-gray-600">
-                <span>Sign Up</span>
+                <Link to='/signup' >SignUp</Link>
             </button>
         </div>
 
@@ -69,11 +69,11 @@ const Navbar = () => {
             <div className="h-[1px] bg-gray-300 "></div>
               
               <button className=" flex ml-3 mt-8 items-center gap-3  px-8 py-2 rounded-lg hover:bg-gray-50 border ">
-                  <span>Login</span>
+                  <Link to='/login' >Login</Link>
               </button>
 
               <button className=" flex ml-3 mt-8 items-center gap-3  px-6  py-2 rounded-lg hover:bg-gray-50 border ">
-                  <span>Sign Up</span>
+                  <Link to='/signup' >SignUp</Link>
               </button>
             </div>
         )}
