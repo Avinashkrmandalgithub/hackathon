@@ -71,14 +71,15 @@ function RoleSelection() {
           Choose Your <span className="text-blue-700">Role</span>
         </h2>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:px-3 max-w-7xl mx-auto px-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:px-3 max-w-7xl mx-auto px-10 cursor-pointer">
         {roles.map((role, index) => (
           <div
             key={index}
             className={` rounded-xl shadow-md p-6 flex flex-col justify-between  ${role.cardColor}`}
           >
             <div className="text-center">
-              <div className="text-4xl mb-4">{role.icon}</div>
+              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-white shadow-lg">
+                <span className="text-3xl">{role.icon}</span></div>
               <h3 className="text-lg font-semibold uppercase mb-3">
                 {role.title}
               </h3>
@@ -90,7 +91,7 @@ function RoleSelection() {
               </ul>
             </div>
             <button
-              className={`${role.buttonColor} text-white font-medium py-2 px-4 rounded-lg transition duration-300`}
+              className={`${role.buttonColor} text-white font-medium py-2 px-4 text-sm rounded-lg transition duration-300 whitespace-nowrap w-full cursor-pointer`}
             >
               {role.buttonText}
             </button>
