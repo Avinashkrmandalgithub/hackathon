@@ -1,21 +1,27 @@
 import React from "react";
-import feedbacks from '../../data/testimonialsData.json'
+import feedbacks from "../../data/testimonialsData.json";
+import Marquee from "react-fast-marquee";
 
 export default function PatientFeedback() {
   return (
     <section className="w-full flex flex-col items-center py-16 px-6">
       <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-        Patient Feedback <span className="font-normal"></span>
+        Patient Feedback
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl">
+      {/* pauseOnHover if u want can be added */}
+      <Marquee gradient={false} speed={25} >
         {feedbacks.map((f) => (
           <div
             key={f.id}
-            className="bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-xl hover:scale-[1.02] transition transform p-6 flex flex-col justify-between"
+            className="bg-white border border-gray-200 rounded-lg shadow-md p-6 m-4 w-80 h-64 flex-shrink-0 flex flex-col justify-between
+                       transition-transform transform hover:scale-105 hover:shadow-xl
+                       cursor-pointer"
           >
-            <p className="text-gray-700 italic mb-6">"{f.text}"</p>
-            <div className="flex items-center space-x-4">
+            <p className="text-gray-700 italic mb-6 line-clamp-4">
+              "{f.text}"
+            </p>
+            <div className="flex items-center space-x-4 mt-auto">
               <img
                 src={f.img}
                 alt={f.name}
@@ -28,13 +34,7 @@ export default function PatientFeedback() {
             </div>
           </div>
         ))}
-      </div>
-
-      <div className="mt-12">
-        <button className="bg-black text-white px-6 py-2 rounded-md shadow hover:bg-gray-800 transition">
-          See more
-        </button>
-      </div>
+      </Marquee>
     </section>
   );
 }
