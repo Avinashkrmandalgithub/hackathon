@@ -77,7 +77,7 @@ export default function SignupPage() {
               type="submit"
               className="w-full rounded-md bg-green-700 text-white py-2 font-medium hover:bg-green-800 transition"
             >
-              Signup
+             <Link to={"/donar"}> SignUp </Link>
             </button>
           </form>
 
