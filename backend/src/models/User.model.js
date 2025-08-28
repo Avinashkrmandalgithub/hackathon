@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt'; 
-
+import bcrypt from 'bcrypt';
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -19,30 +18,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 6,
     select: false
-  },
-  role: {
-    type: String,
-    enum: ['doner', 'recipient', 'admin', 'hospital', 'medical'],
-    default: 'recipient'
-  },
-  age: {
-    type: Number,
-    min: 18,
-    required: true
-  },
-  gender: {
-    type: String,
-    enum: ['male', 'female', 'other'],
-    required: true
-  },
-  bloodGroup: {
-    type: String,
-    enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-    required: true
-  },
-  contactInfo: {
-    phone: String,
-    address: String
   },
 }, { timestamps: true });
 
