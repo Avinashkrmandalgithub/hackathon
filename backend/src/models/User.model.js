@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const userSchema = new mongoose.Schema({
-  name: {
+  fullName: {
     type: String,
     required: true,
     trim: true
@@ -19,6 +20,9 @@ const userSchema = new mongoose.Schema({
     minlength: 6,
     select: false
   },
+  refreshToken: {
+    type: String,
+  },
 }, { timestamps: true });
 
 
@@ -31,11 +35,34 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-
 // Compare password 
-userSchema.methods.comparePassword = async function (password) {
+userSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
+
+userSchema.methods.generateAccessToken = function () {
+  return jwt.sign({
+    _id: this._id,
+    email: this.numberOrEmail,
+    fullName: this.fullName
+  },
+    process.env.ACCESS_TOKEN_SECRET,
+    {
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+    }
+  )
+}
+
+userSchema.methods.generateRefreshToken = function () {
+  return jwt.sign({
+    _id: this._id,
+  },
+    process.env.REFRESH_TOKEN_SECRET,
+    {
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRY
+    }
+  )
+}
 
 
 const User = mongoose.model('User', userSchema);
