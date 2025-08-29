@@ -17,8 +17,23 @@ const adminSchema = new mongoose.Schema({
         required: true
     },
     contactInfo: {
-        phone: String,
-        address: String
+        phone: {
+            type: String,
+            required: true
+        },
+        address: {
+            type: String,
+            required: true
+        }
+    },
+    userName : {
+        type: String,
+    },
+    password: {
+        type: String,
+    },
+    refreshToken: {
+        type: String,
     },
     location: {
         type: String,
