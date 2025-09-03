@@ -7,6 +7,7 @@ import SignUp from './components/SignUp/SignUp.jsx'
 import Donar from './components/dashboard/donar/Donar.jsx'
 import ProfileUpdate from './components/dashboard/donar/ProfileUpdate.jsx'
 import { DonarProvider } from './context/DonarContext'
+import Patient from './components/dashboard/Patient/Patient.jsx'
 
 function App() {
   
@@ -20,6 +21,7 @@ function App() {
         <Route path='/about' element={<About/>}/>
         <Route path='/donar' element={<Donar/>}/>
         <Route path='/donar/update-profile' element={<ProfileUpdate/>}/>
+        <Route path='/patient' element={<Patient/>}/>
         
 
       </Routes>
