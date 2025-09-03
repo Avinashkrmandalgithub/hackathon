@@ -25,10 +25,17 @@ const Navbar = () => {
         </Link>
 
         <div id="nav-menu" className="hidden lg:flex gap-12 ">
+
+            <Link to="/" className="font-medium hover:text-[#3238f2]">Home</Link>
+            <Link to="/work" className="font-medium hover:text-[#3238f2]">How Its Work</Link>
+            <Link to="/about" className="font-medium hover:text-[#3238f2]">About</Link>
+            <Link to="/contact" className="font-medium hover:text-[#3238f2]">Contact</Link>
+=======
             <Link to="#pricing" className="font-medium hover:text-[#3238f2]">Home</Link>
             <Link to="#" className="font-medium hover:text-[#3238f2]">How Its Work</Link>
             <Link to={'/about'} className="font-medium hover:text-[#3238f2]">About</Link>
             <Link to="#" className="font-medium hover:text-[#3238f2]">Contact</Link>
+
         </div>
 
         <div className="hidden flex-1 lg:flex  justify-end gap-4 items-center">
@@ -60,19 +67,31 @@ const Navbar = () => {
             </div>
 
             <div className="mt-6">
+
+                <Link to="/" className="font-medium m-3 p-3 hover:bg-gray-50 block">Home</Link>
+                <Link to="/work" className="font-medium m-3 p-3 hover:bg-gray-50 block">How Its Work</Link>
+                <Link to="/about" className="font-medium m-3 p-3 hover:bg-gray-50 block">About</Link>
+                <Link to="/contact" className="font-medium m-3 p-3 hover:bg-gray-50 block">Contact</Link>
+
                 <Link to="#" className="font-medium m-3 p-3 hover:bg-gray-50 block">Home</Link>
                 <Link to="#" className="font-medium m-3 p-3 hover:bg-gray-50 block">How Its Work</Link>
                 <Link to={'/about'} className="font-medium m-3 p-3 hover:bg-gray-50 block">About</Link>
                 <Link to="#" className="font-medium m-3 p-3 hover:bg-gray-50 block">Contact</Link>
                 
+
             </div>
 
             <div className="h-[1px] bg-gray-300 "></div>
             
-            <button className=" flex  mt-8 items-center gap-3  px-6 py-2 rounded-lg hover:bg-gray-50 border ">
-                <span>Login</span>
-            </button>
-        </div>
+            <div className="flex flex-col gap-4 mt-8 px-6">
+                <Link to="/login" className="w-full py-2 text-center border rounded-lg hover:bg-gray-50">
+                    Login
+                </Link>
+                <Link to="/signup" className="w-full py-2 text-center border rounded-lg hover:bg-gray-50">
+                    SignUp
+                </Link>
+            </div>
+          </div>
         )}
 
 

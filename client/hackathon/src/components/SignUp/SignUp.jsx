@@ -17,6 +17,7 @@ export default function SignUp() {
   const [inputType, setInputType] = useState("Email");
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", phone: "", password: "" });
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -73,7 +74,7 @@ export default function SignUp() {
             ))}
           </div>
 
-          {/* Sign In / Sign Up Toggle */}
+          {/* Auth Mode Toggle */}
           <div className="flex border-b">
             <button
               onClick={() => setAuthMode('Sign In')}
@@ -160,19 +161,19 @@ export default function SignUp() {
             </button>
           </form>
 
+          {/* Social Login Section */}
           <div className="flex items-center gap-3">
             <hr className="flex-1 border-gray-300" />
             <span className="text-gray-500 text-sm">OR CONTINUE WITH</span>
             <hr className="flex-1 border-gray-300" />
           </div>
 
-          {/* Social Logins */}
           <div className="flex flex-col sm:flex-row gap-3">
             <button className="flex-1 flex items-center justify-center gap-2 border rounded-md py-2.5 hover:bg-gray-50 transition-colors">
-                <FaGoogle className="text-red-500" /> Sign in with Google
+              <FaGoogle className="text-red-500" /> Sign in with Google
             </button>
-             <button className="flex-1 flex items-center justify-center gap-2 border rounded-md py-2.5 hover:bg-gray-50 transition-colors">
-                <FaApple /> Sign in with Apple
+            <button className="flex-1 flex items-center justify-center gap-2 border rounded-md py-2.5 hover:bg-gray-50 transition-colors">
+              <FaApple /> Sign in with Apple
             </button>
           </div>
         </div>

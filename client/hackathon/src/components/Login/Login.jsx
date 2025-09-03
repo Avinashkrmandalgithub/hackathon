@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -66,6 +66,7 @@ export default function Login() {
 
           {/* Login Button */}
           <button
+            onClick={Navigate('/patient')}
             type="submit"
             className="w-full rounded-md bg-green-800 px-4 py-2 text-sm font-medium text-white hover:bg-green-900 focus:outline-none"
           >
