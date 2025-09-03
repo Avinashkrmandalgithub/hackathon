@@ -25,10 +25,17 @@ const Navbar = () => {
         </Link>
 
         <div id="nav-menu" className="hidden lg:flex gap-12 ">
+
             <Link to="/" className="font-medium hover:text-[#3238f2]">Home</Link>
             <Link to="/work" className="font-medium hover:text-[#3238f2]">How Its Work</Link>
             <Link to="/about" className="font-medium hover:text-[#3238f2]">About</Link>
             <Link to="/contact" className="font-medium hover:text-[#3238f2]">Contact</Link>
+=======
+            <Link to="#pricing" className="font-medium hover:text-[#3238f2]">Home</Link>
+            <Link to="#" className="font-medium hover:text-[#3238f2]">How Its Work</Link>
+            <Link to={'/about'} className="font-medium hover:text-[#3238f2]">About</Link>
+            <Link to="#" className="font-medium hover:text-[#3238f2]">Contact</Link>
+
         </div>
 
         <div className="hidden flex-1 lg:flex  justify-end gap-4 items-center">
@@ -60,10 +67,18 @@ const Navbar = () => {
             </div>
 
             <div className="mt-6">
+
                 <Link to="/" className="font-medium m-3 p-3 hover:bg-gray-50 block">Home</Link>
                 <Link to="/work" className="font-medium m-3 p-3 hover:bg-gray-50 block">How Its Work</Link>
                 <Link to="/about" className="font-medium m-3 p-3 hover:bg-gray-50 block">About</Link>
                 <Link to="/contact" className="font-medium m-3 p-3 hover:bg-gray-50 block">Contact</Link>
+
+                <Link to="#" className="font-medium m-3 p-3 hover:bg-gray-50 block">Home</Link>
+                <Link to="#" className="font-medium m-3 p-3 hover:bg-gray-50 block">How Its Work</Link>
+                <Link to={'/about'} className="font-medium m-3 p-3 hover:bg-gray-50 block">About</Link>
+                <Link to="#" className="font-medium m-3 p-3 hover:bg-gray-50 block">Contact</Link>
+                
+
             </div>
 
             <div className="h-[1px] bg-gray-300 "></div>
