@@ -1,6 +1,5 @@
 import React from "react";
 
-// Array of different roles with their details
 const roles = [
   {
     title: "ORGAN DONOR",
