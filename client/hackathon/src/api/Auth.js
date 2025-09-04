@@ -14,4 +14,4 @@ export const signin = (email, password) =>
 
 export const signout = () => API.post("/logout");
 
-export const getCurrentUser = () => API.get("/me");
+
