@@ -1,13 +1,37 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Login() {
   // State variables to store input values
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  
+  // Context and navigation
+  const { handleSignin, loading } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(""); // Clear any previous errors
+    
+    try {
+      const response = await handleSignin(email, password);
+      console.log('Login successful:', response.data);
+      
+      // Navigate to role selection page after successful login
+      navigate('/role-selection');
+      
+    } catch (error) {
+      console.error('Login error:', error);
+      setError(error.response?.data?.message || 'Login failed. Please try again.');
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
@@ -19,8 +43,15 @@ export default function Login() {
           Enter your credentials to access your account
         </p>
 
+        {/* Error Message */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+            {error}
+          </div>
+        )}
+
         {/* Form */}
-        <form className="mt-6 space-y-5">
+        <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-900">

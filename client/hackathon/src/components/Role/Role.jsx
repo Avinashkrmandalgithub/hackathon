@@ -15,7 +15,6 @@ const roles = [
       "Automated family notifications",
       "Real-time availability status"
     ],
-<<<<<<< HEAD
     buttonText: "Become a Donor",
     buttonLink: "/signup",
     gradient: "from-red-500 to-pink-600",
@@ -24,12 +23,6 @@ const roles = [
     icon: <Heart className="w-8 h-8 text-white" />,
     featured: true,
     stats: "10,000+ lives saved"
-=======
-    buttonText: "Register as Donor",
-    buttonColor: "bg-blue-600 hover:bg-blue-700", // Tailwind classes for button styling
-    cardColor: "bg-blue-50", // Card background color
-    icon: "👤", // Emoji icon for role
->>>>>>> ed0614366538d78df102910838f9c06a4c21fbed
   },
   {
     title: "Patient",
@@ -95,7 +88,6 @@ const roles = [
 
 function RoleSelection() {
   return (
-<<<<<<< HEAD
     <section className="py-20 bg-gradient-to-b from-white via-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -104,54 +96,8 @@ function RoleSelection() {
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-green-100 text-gray-800 text-sm font-medium mb-6">
             <Star className="w-4 h-4 mr-2" />
             Join Our Community
-=======
-    <section className="py-12 px-6 mt-15">
-      {/* Section heading */}
-      <div className="text-center mb-20">
-        <h2 className="text-5xl md:text-6xl ">
-          Choose Your <span className="text-blue-700">Role</span>
-        </h2>
-      </div>
-
-      {/* Grid layout for displaying role cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:px-3 max-w-7xl mx-auto px-10 cursor-pointer">
-        {/* Mapping through each role to generate a card */}
-        {roles.map((role, index) => (
-          <div
-            key={index}
-            className={`rounded-xl shadow-md p-6 flex flex-col justify-between ${role.cardColor}`}
-          >
-            {/* Card content */}
-            <div className="text-center">
-              {/* Icon inside a circular container */}
-              <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-white shadow-lg">
-                <span className="text-3xl">{role.icon}</span>
-              </div>
-
-              {/* Role title */}
-              <h3 className="text-lg font-semibold uppercase mb-3">
-                {role.title}
-              </h3>
-
-              {/* Role description */}
-              <p className="text-sm text-gray-600 mb-4">{role.description}</p>
-
-              {/* List of role features */}
-              <ul className="text-sm text-gray-700 text-left list-disc list-inside mb-6">
-                {role.points.map((point, i) => (
-                  <li key={i}>{point}</li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Action button */}
-            <button
-              className={`${role.buttonColor} text-white font-medium py-2 px-4 text-sm rounded-lg transition duration-300 whitespace-nowrap w-full cursor-pointer`}
-            >
-              {role.buttonText}
-            </button>
->>>>>>> ed0614366538d78df102910838f9c06a4c21fbed
           </div>
+          
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Choose Your <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">Role</span>
           </h2>
