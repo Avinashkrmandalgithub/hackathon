@@ -147,11 +147,22 @@ const runMatchingProcess = async () => {
     }
 };
 
-// Schedule to run every minute
-cron.schedule("* * * * *", async () => {
-    console.log("⏰ Running automatic matching process...");
-    await runMatchingProcess();
-});
+// Schedule to run every minute - DISABLED until database connection is stable
+// cron.schedule("* * * * *", async () => {
+//     console.log("⏰ Running automatic matching process...");
+//     await runMatchingProcess();
+// });
+
+// Only run cron job if database is connected
+import mongoose from 'mongoose';
+if (mongoose.connection.readyState === 1) {
+    cron.schedule("*/5 * * * *", async () => {
+        console.log("⏰ Running automatic matching process...");
+        await runMatchingProcess();
+    });
+} else {
+    console.log("🔄 Cron job disabled - waiting for database connection");
+}
 
 // Export for manual triggering if needed
 export { runMatchingProcess };

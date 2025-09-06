@@ -1,12 +1,34 @@
-import React from "react";
-import { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { handleSignin } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      await handleSignin(email, password);
+      
+      // Redirect to the intended page or default to role-selection
+      const from = location.state?.from?.pathname || '/role-selection';
+      navigate(from, { replace: true });
+    } catch (err) {
+      setError("Login failed. Please check your credentials.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
@@ -18,7 +40,8 @@ export default function Login() {
         </p>
 
         {/* Form */}
-        <form className="mt-6 space-y-5">
+        <form className="mt-6 space-y-5" onSubmit={onSubmit}>
+          {error && <div className="text-sm text-red-600">{error}</div>}
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-900">
@@ -30,6 +53,7 @@ export default function Login() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm placeholder-gray-400 focus:border-green-700 focus:ring-green-700"
+              required
             />
           </div>
 
@@ -47,8 +71,9 @@ export default function Login() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Name"
+              placeholder="Password"
               className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm placeholder-gray-400 focus:border-green-700 focus:ring-green-700"
+              required
             />
           </div>
 
@@ -66,11 +91,11 @@ export default function Login() {
 
           {/* Login Button */}
           <button
-            onClick={Navigate('/patient')}
             type="submit"
-            className="w-full rounded-md bg-green-800 px-4 py-2 text-sm font-medium text-white hover:bg-green-900 focus:outline-none"
+            disabled={loading}
+            className="w-full rounded-md bg-green-800 px-4 py-2 text-sm font-medium text-white hover:bg-green-900 focus:outline-none disabled:opacity-50"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
