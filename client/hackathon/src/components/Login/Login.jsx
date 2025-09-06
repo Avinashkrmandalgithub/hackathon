@@ -1,47 +1,26 @@
-import React, { useContext, useState } from "react";
+import React from "react";
+import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { Link, Navigate } from "react-router-dom";
 
 export default function Login() {
+  // State variables to store input values
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { handleSignin } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    try {
-      await handleSignin(email, password);
-      
-      // Redirect to the intended page or default to role-selection
-      const from = location.state?.from?.pathname || '/role-selection';
-      navigate(from, { replace: true });
-    } catch (err) {
-      setError("Login failed. Please check your credentials.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
       <div className="w-full max-w-md px-6 py-10">
-        {/* Heading */}
+        
+        {/* Heading Section */}
         <h2 className="text-2xl font-bold text-gray-900">Welcome back!</h2>
         <p className="mt-1 text-sm text-gray-600">
-          Enter your Credentials to access your account
+          Enter your credentials to access your account
         </p>
 
         {/* Form */}
-        <form className="mt-6 space-y-5" onSubmit={onSubmit}>
-          {error && <div className="text-sm text-red-600">{error}</div>}
+        <form className="mt-6 space-y-5">
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-900">
@@ -49,35 +28,35 @@ export default function Login() {
             </label>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={email} // Controlled input
+              onChange={(e) => setEmail(e.target.value)} // Update state
               placeholder="Enter your email"
               className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm placeholder-gray-400 focus:border-green-700 focus:ring-green-700"
               required
             />
           </div>
 
-          {/* Password */}
+          {/* Password Input */}
           <div>
             <div className="flex items-center justify-between">
               <label className="block text-sm font-medium text-gray-900">
                 Password
               </label>
               <a href="#" className="text-sm text-blue-600 hover:underline">
-                forgot password
+                Forgot password?
               </a>
             </div>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
+              placeholder="Name"
               className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm placeholder-gray-400 focus:border-green-700 focus:ring-green-700"
               required
             />
           </div>
 
-          {/* Remember me */}
+          {/* Remember Me Checkbox */}
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -99,7 +78,7 @@ export default function Login() {
           </button>
         </form>
 
-        {/* Divider */}
+        {/* Divider Line */}
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-200"></div>
@@ -109,22 +88,27 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Social Login */}
+        {/* Social Login Options */}
         <div className="flex gap-3">
+          {/* Google Button */}
           <button className="flex w-1/2 items-center justify-center gap-2 rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
             <FcGoogle className="text-lg" />
             Sign in with Google
           </button>
+          {/* Apple Button */}
           <button className="flex w-1/2 items-center justify-center gap-2 rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
             <FaApple className="text-lg" />
             Sign in with Apple
           </button>
         </div>
 
-        {/* Sign Up Link */}
+        {/* Signup Link */}
         <p className="mt-6 text-center text-sm text-gray-600">
           Don’t have an account?{" "}
-          <Link to={'/signup'} className="font-medium text-blue-600 hover:underline">
+          <Link
+            to="/signup"
+            className="font-medium text-blue-600 hover:underline"
+          >
             Sign Up
           </Link>
         </p>
