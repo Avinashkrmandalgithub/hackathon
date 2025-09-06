@@ -1,26 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState, useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom"; // useNavigate instead of Navigate
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Login() {
   // State variables to store input values
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  // Hook for programmatic navigation
+  const [error, setError] = useState("");
+  
+  // Context and navigation
+  const { handleSignin, loading } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Function to handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevents page reload
-
-    // Basic validation (you can add API call here)
-    if (email && password) {
-      // If login success, redirect to /patient page
-      navigate("/patient");
-    } else {
-      alert("Please enter email and password");
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(""); // Clear any previous errors
+    
+    try {
+      const response = await handleSignin(email, password);
+      console.log('Login successful:', response.data);
+      
+      // Navigate to role selection page after successful login
+      navigate('/role-selection');
+      
+    } catch (error) {
+      console.error('Login error:', error);
+      setError(error.response?.data?.message || 'Login failed. Please try again.');
     }
   };
 
@@ -34,9 +43,16 @@ export default function Login() {
           Enter your credentials to access your account
         </p>
 
-        {/* Login Form */}
-        <form onSubmit={handleSubmit} className="mt-6 space-y-5">
-          {/* Email Input */}
+        {/* Error Message */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+            {error}
+          </div>
+        )}
+
+        {/* Form */}
+        <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
+          {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-900">
               Email address
@@ -47,6 +63,7 @@ export default function Login() {
               onChange={(e) => setEmail(e.target.value)} // Update state
               placeholder="Enter your email"
               className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm placeholder-gray-400 focus:border-green-700 focus:ring-green-700"
+              required
             />
           </div>
 
@@ -62,10 +79,11 @@ export default function Login() {
             </div>
             <input
               type="password"
-              value={password} // Controlled input
-              onChange={(e) => setPassword(e.target.value)} // Update state
-              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Name"
               className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm placeholder-gray-400 focus:border-green-700 focus:ring-green-700"
+              required
             />
           </div>
 
@@ -84,9 +102,10 @@ export default function Login() {
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full rounded-md bg-green-800 px-4 py-2 text-sm font-medium text-white hover:bg-green-900 focus:outline-none"
+            disabled={loading}
+            className="w-full rounded-md bg-green-800 px-4 py-2 text-sm font-medium text-white hover:bg-green-900 focus:outline-none disabled:opacity-50"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
