@@ -24,7 +24,6 @@ const App = () => {
       <Route path='/admin/login' element={<AdminLogin />} />
       <Route path='/admin/signup' element={<AdminSignUp />} />
 
-
       <Route path="/role-selection" element={<RoleSelection />} />
       <Route path="/donor-form" element={<DonorForm />} />
       <Route path="/patient-form" element={<PatientForm />} />
