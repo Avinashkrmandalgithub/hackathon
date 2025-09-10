@@ -1,3 +1,4 @@
+// src/store/userStore.js
 import { create } from "zustand";
 import axios from "axios";
 
@@ -8,86 +9,17 @@ const userStore = create((set, get) => ({
   user: null,
   isAuthenticated: false,
 
-  signUp: async (updatedDetails) => {
+  // User registration
+  signUp: async (userData) => {
     set({ isLoading: true, error: null });
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/user/register`,
-                updatedDetails,
+        userData,
         {
-          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },
-        }
-      );
-
-      if (response.status === 200) {
-        set({
-          user: null,
-          isAuthenticated: false,
-          isLoading: false,
-        });
-
-        // console.log("from store", response.data);
-        // handleSuccess("OTP send Successfully");
-      } else {
-        set({ user: null, isAuthenticated: false, isLoading: false });
-      }
-      // console.log('User Data:', response.data, response.data.message);
-    } catch (error) {
-      set({ isLoading: false, error: error.message });
-      // console.error('Error:', error.response?.data?.message || error.message);
-      handleError(error.response?.data?.message || error.message);
-      throw error;
-    } finally {
-      set({ isLoading: false });
-    }
-  },
-
-  logIn: async (data, setIsSwitch, setMore, navigate) => {
-    set({ isLoading: true, error: null });
-
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/user/login`,
-                data,
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        set({
-          user: response.data.data.user,
-          isAuthenticated: true,
-          isLoading: false,
-        });
-
-        // console.log("from store", response.data.data)
-        // handleSuccess(response.data.message);
-        // navigate("/");
-      } else {
-        set({ user: null, isAuthenticated: false, isLoading: false });
-      }
-    } catch (error) {
-      set({ isLoading: false, error: error.message });
-      // console.error('Error:', error.response?.data?.message || error.message);
-    //   handleError(error.response?.data?.message || error.message);
-      throw error;
-    }
-  },
-
-  logOut: async () => {
-    set({ isLoading: true, error: null });
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/user/logout`,
-        {
-          withCredentials: true,
         }
       );
 
@@ -95,37 +27,123 @@ const userStore = create((set, get) => ({
         user: null,
         isAuthenticated: false,
         isLoading: false,
+        message: response.data.message,
       });
 
+      return response.data.data;
     } catch (error) {
-      set({ isLoading: false, error: error.message });
-      // console.error('Error:', error.response?.data?.message || error.message);
+      set({
+        isLoading: false,
+        error: error.response?.data?.message || error.message,
+      });
       throw error;
     }
   },
 
+  // User login
+  logIn: async (credentials) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/user/login`,
+        credentials,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // Store tokens in localStorage
+      if (response.data.accessToken) {
+        localStorage.setItem("token", response.data.accessToken);
+        localStorage.setItem("refreshToken", response.data.refreshToken);
+      }
+
+      set({
+        user: response.data.data,
+        isAuthenticated: true,
+        isLoading: false,
+        message: response.data.message,
+      });
+
+      return response.data.data;
+    } catch (error) {
+      set({
+        isLoading: false,
+        error: error.response?.data?.message || error.message,
+      });
+      throw error;
+    }
+  },
+
+  // User logout
+  logOut: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/user/logout`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      // Remove tokens from localStorage
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+
+      set({
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
+        message: response.data.message,
+      });
+    } catch (error) {
+      set({
+        isLoading: false,
+        error: error.response?.data?.message || error.message,
+      });
+      throw error;
+    }
+  },
+
+  // Fetch authenticated user profile
   fetchAuth: async () => {
+    set({ isLoading: true, error: null });
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/user/profile`,
         {
-          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
 
-      if (response.status === 200) {
-        set({ user: response.data.data, isAuthenticated: true });
-        // console.log("from store", response.data.data);
-        // handleSuccess(response.data.message);
-      } else {
-        set({ user: null, isAuthenticated: false });
-      }
+      set({
+        user: response.data.data,
+        isAuthenticated: true,
+        isLoading: false,
+      });
+      return response.data.data;
     } catch (error) {
-      set({ user: null, isAuthenticated: false });
-      // handleError(error.response?.data?.message || error.message);
+      set({
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
+        error: error.response?.data?.message || error.message,
+      });
       throw error;
     }
   },
+
+  // Clear error message
+  clearError: () => set({ error: null }),
+
+  // Clear success message
+  clearMessage: () => set({ message: null }),
 }));
 
 export default userStore;

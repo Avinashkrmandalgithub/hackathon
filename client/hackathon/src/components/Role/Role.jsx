@@ -1,8 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const roles = [
   {
-    title: "ORGAN DONOR",
+    title: "DONOR",
     description:
       "Register as an organ donor and help save lives through your generous gift.",
     points: [
@@ -15,6 +16,7 @@ const roles = [
     buttonColor: "bg-blue-600 hover:bg-blue-700",
     cardColor: "bg-blue-50",
     icon: "👤",
+    path: "/donor-form", // Donor form route
   },
   {
     title: "PATIENT",
@@ -30,40 +32,29 @@ const roles = [
     buttonColor: "bg-green-600 hover:bg-green-700",
     cardColor: "bg-green-50",
     icon: "🧑‍⚕️",
+    path: "/patient-form", // Patient form route
   },
   {
-    title: "HOSPITAL",
+    title: "ADMIN",
     description:
-      "Access our network to coordinate organ transplants and manage patient cases.",
+      "Manage the entire organ donation system, verify users, and approve matches.",
     points: [
-      "Patient management",
-      "Real-time matching",
-      "Coordination tools",
-      "Analytics dashboard",
+      "User verification",
+      "Approve donors & patients",
+      "Monitor organ matching",
+      "System management",
     ],
-    buttonText: "Register as Hospital",
-    buttonColor: "bg-blue-600 hover:bg-blue-700",
-    cardColor: "bg-gray-50",
-    icon: "🏥",
-  },
-  {
-    title: "MEDICAL PROFESSIONAL",
-    description:
-      "Facilitate organ matching and coordinate between donors, patients, and hospitals.",
-    points: [
-      "Case management",
-      "Medical assessments",
-      "Priority decisions",
-      "Team coordination",
-    ],
-    buttonText: "Register as Medical Professional",
+    buttonText: "Login as Admin",
     buttonColor: "bg-red-600 hover:bg-red-700",
     cardColor: "bg-red-50",
-    icon: "⚕️",
+    icon: "⚙️",
+    path: "/admin-login", // Admin login route
   },
 ];
 
 function RoleSelection() {
+  const navigate = useNavigate();
+
   return (
     <section className="py-12 px-6 mt-15">
       <div className="text-center mb-20">
@@ -71,15 +62,16 @@ function RoleSelection() {
           Choose Your <span className="text-blue-700">Role</span>
         </h2>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:px-3 max-w-7xl mx-auto px-10 cursor-pointer">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:px-3 max-w-6xl mx-auto px-10 cursor-pointer">
         {roles.map((role, index) => (
           <div
             key={index}
-            className={` rounded-xl shadow-md p-6 flex flex-col justify-between  ${role.cardColor}`}
+            className={`rounded-xl shadow-md p-6 flex flex-col justify-between ${role.cardColor}`}
           >
             <div className="text-center">
               <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-white shadow-lg">
-                <span className="text-3xl">{role.icon}</span></div>
+                <span className="text-3xl">{role.icon}</span>
+              </div>
               <h3 className="text-lg font-semibold uppercase mb-3">
                 {role.title}
               </h3>
@@ -91,6 +83,7 @@ function RoleSelection() {
               </ul>
             </div>
             <button
+              onClick={() => navigate(role.path)} // Navigate to respective form/login
               className={`${role.buttonColor} text-white font-medium py-2 px-4 text-sm rounded-lg transition duration-300 whitespace-nowrap w-full cursor-pointer`}
             >
               {role.buttonText}

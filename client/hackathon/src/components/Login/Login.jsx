@@ -1,12 +1,48 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaApple } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import userStore from "../../store/userStore";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const { logIn, error, isLoading } = userStore();
+
+  // Local states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  // Validation
+  const validateForm = () => {
+    if (!email || !password) {
+      setErrorMsg("⚠️ Please fill in all fields");
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMsg("⚠️ Enter a valid email address");
+      return false;
+    }
+    setErrorMsg("");
+    return true;
+  };
+
+  // Handle submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    try {
+      const user = await logIn({ email, password });
+      console.log("✅ Login success:", user);
+
+      // Navigate to dashboard (or home)
+      navigate("/role-selection");
+    } catch (err) {
+      setErrorMsg(err.response?.data?.message || "❌ Login failed, try again!");
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
@@ -14,11 +50,18 @@ export default function Login() {
         {/* Heading */}
         <h2 className="text-2xl font-bold text-gray-900">Welcome back!</h2>
         <p className="mt-1 text-sm text-gray-600">
-          Enter your Credentials to access your account
+          Enter your credentials to access your account
         </p>
 
+        {/* Error Message */}
+        {(errorMsg || error) && (
+          <p className="mt-3 text-sm text-red-600 bg-red-50 p-2 rounded-md">
+            {errorMsg || error}
+          </p>
+        )}
+
         {/* Form */}
-        <form className="mt-6 space-y-5">
+        <form onSubmit={handleSubmit} className="mt-6 space-y-5">
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-900">
@@ -40,14 +83,14 @@ export default function Login() {
                 Password
               </label>
               <a href="#" className="text-sm text-blue-600 hover:underline">
-                forgot password
+                Forgot password?
               </a>
             </div>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Name"
+              placeholder="Enter your password"
               className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm placeholder-gray-400 focus:border-green-700 focus:ring-green-700"
             />
           </div>
@@ -67,9 +110,12 @@ export default function Login() {
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full rounded-md bg-green-800 px-4 py-2 text-sm font-medium text-white hover:bg-green-900 focus:outline-none"
+            disabled={isLoading}
+            className={`w-full rounded-md bg-green-800 px-4 py-2 text-sm font-medium text-white ${
+              isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-green-900"
+            }`}
           >
-            Login
+            {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
 
@@ -98,7 +144,10 @@ export default function Login() {
         {/* Sign Up Link */}
         <p className="mt-6 text-center text-sm text-gray-600">
           Don’t have an account?{" "}
-          <Link to={'/signup'} className="font-medium text-blue-600 hover:underline">
+          <Link
+            to={"/signup"}
+            className="font-medium text-blue-600 hover:underline"
+          >
             Sign Up
           </Link>
         </p>

@@ -1,3 +1,4 @@
+// src/store/donorStore.js
 import { create } from "zustand";
 import axios from "axios";
 
@@ -7,45 +8,23 @@ const donorStore = create((set) => ({
   donor: null,
   error: null,
   message: null,
-  isAuthenticated: null,
+  isAuthenticated: false,
 
+  // Create donor profile
   createDonor: async (data) => {
     set({ isLoading: true, error: null });
     try {
       const res = await axios.post(
-        $`{import.meta.env.VITE_BACKEND_URL}/donors`,
+        `${import.meta.env.VITE_BACKEND_URL}/donor/createdonor`,
         data,
         {
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
 
-      set({
-        isLoading: false,
-        message: res.data.message,
-        donor: res.data.data,
-        isAuthenticated: true,
-      });
-    } catch (error) {
-      set({
-        error: error.response?.data?.message || error.message,
-        isLoading: false,
-      });
-
-      throw error;
-    }
-  },
-
-  loginDonor: async (data) => {
-    set({ isLoading: true, error: null });
-    try {
-      const res = await axios.post(
-        $`{import.meta.env.VITE_BACKEND_URL}/donors/login`,
-        data,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
       set({
         isLoading: false,
         message: res.data.message,
@@ -62,7 +41,42 @@ const donorStore = create((set) => ({
     }
   },
 
+  // Login donor
+  loginDonor: async (data) => {
+    set({ isLoading: true, error: null });
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/donor/login`,
+        data,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      // Store token in localStorage
+      if (res.data.data?.token) {
+        localStorage.setItem("token", res.data.data.token);
+      }
+
+      set({
+        isLoading: false,
+        message: res.data.message,
+        donor: res.data.data,
+        isAuthenticated: true,
+      });
+      return res.data.data;
+    } catch (error) {
+      set({
+        error: error.response?.data?.message || error.message,
+        isLoading: false,
+      });
+      throw error;
+    }
+  },
+
+  // Logout donor
   logoutDonor: () => {
+    localStorage.removeItem("token");
     set({
       donor: null,
       message: "Logged out successfully",
@@ -70,11 +84,17 @@ const donorStore = create((set) => ({
     });
   },
 
+  // Get donor by ID
   getDonorById: async (id) => {
     set({ isLoading: true, error: null });
     try {
-      const res = await axios.post(
-        $`{import.meta.env.VITE_BACKEND_URL}/donors/${id}`
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/donor/getDonorById/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       set({ donor: res.data.data, isLoading: false });
       return res.data.data;
@@ -87,13 +107,42 @@ const donorStore = create((set) => ({
     }
   },
 
+  // Get donor profile (current user)
+  getDonorProfile: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/donor/getDonorProfile`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      set({ donor: res.data.data, isLoading: false });
+      return res.data.data;
+    } catch (error) {
+      set({
+        error: error.response?.data?.message || error.message,
+        isLoading: false,
+      });
+      throw error;
+    }
+  },
+
+  // Update donor profile
   updateDonorProfile: async (data) => {
     set({ isLoading: true, error: null });
     try {
       const res = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/donors/profile`,
+        `${import.meta.env.VITE_BACKEND_URL}/donor/updateDonorProfile`,
         data,
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
 
       set({
@@ -111,16 +160,35 @@ const donorStore = create((set) => ({
     }
   },
 
-  getAllDonors: async () => {
+  // Get all donors
+  getAllDonors: async (filters = {}) => {
     set({ isLoading: true, error: null });
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/donors`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/donor/getAllDonors`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          params: filters,
+        }
+      );
       set({ donors: res.data.data, isLoading: false });
+      return res.data.data;
     } catch (err) {
       set({
         error: err.response?.data?.message || err.message,
         isLoading: false,
       });
+      throw err;
     }
   },
+
+  // Clear error message
+  clearError: () => set({ error: null }),
+
+  // Clear success message
+  clearMessage: () => set({ message: null }),
 }));
+
+export default donorStore;
