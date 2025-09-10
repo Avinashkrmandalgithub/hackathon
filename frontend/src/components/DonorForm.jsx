@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart } from "lucide-react";
-import donorStore from "../store/donorStore";
+import donorStore from "../store/donorStore.js";
 
 export default function DonorForm() {
   const navigate = useNavigate();
@@ -20,6 +20,7 @@ export default function DonorForm() {
       address: ""
     },
     location: "",
+    medicalHistory: "" // Added missing field
   });
 
   const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
@@ -171,6 +172,23 @@ export default function DonorForm() {
                   required
                   rows="2"
                   className="w-full p-3 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500 md:col-span-2"
+                />
+              </div>
+            </div>
+
+            {/* Medical History Section - Added this section */}
+            <div className="border-b pb-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Medical Information
+              </h3>
+              <div className="grid grid-cols-1 gap-4">
+                <textarea
+                  name="medicalHistory"
+                  placeholder="Medical History/Conditions (e.g., diabetes, hypertension, allergies, etc.)"
+                  value={formData.medicalHistory}
+                  onChange={handleChange}
+                  rows="3"
+                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                 />
               </div>
             </div>

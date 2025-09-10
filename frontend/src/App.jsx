@@ -9,6 +9,8 @@ import PatientDashboard from './pages/PatientDashboard'
 import AdminDashboard from './pages/AdminDashboard'
 import SignUp from './pages/SignUp.jsx';
 import Login from './pages/Login.jsx'
+import AdminLogin from './pages/AdminLogin.jsx'
+import AdminSignUp from './pages/AdminSignUp.jsx'
 
 
 const App = () => {
@@ -19,7 +21,8 @@ const App = () => {
       {/* sign up / login */}
       <Route path='/signup' element={<SignUp />} />
       <Route path='/login' element={<Login />} />
-
+      <Route path='/admin/login' element={<AdminLogin />} />
+      <Route path='/admin/signup' element={<AdminSignUp />} />
 
       <Route path="/role-selection" element={<RoleSelection />} />
       <Route path="/donor-form" element={<DonorForm />} />

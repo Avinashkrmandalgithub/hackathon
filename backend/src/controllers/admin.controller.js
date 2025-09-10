@@ -37,9 +37,9 @@ const accessAndRefreshTokenGenrator = async (adminId) => {
 }
 
 const adminRegister = asyncHandler(async (req, res) => {
-    const { user, role, gender, contactInfo, location } = req.body;
-    
-    if (!user || !role || !gender || !contactInfo || !location) {
+    const { role, gender, contactInfo, location } = req.body;
+
+    if ( !role || !gender || !contactInfo || !location) {
         throw new ApiError(400, "All fields are required");
     }
 
@@ -57,18 +57,18 @@ const adminRegister = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Phone and address are required in contact info");
     }
     
-    const userExists = await User.findById(user);
+    const userExists = await User.findById(req.user._id);
     if (!userExists) {
         throw new ApiError(404, "User not found");
     }
-    
-    const existingAdmin = await Admin.findOne({ user });
+
+    const existingAdmin = await Admin.findOne({ user: req.user._id });
     if (existingAdmin) {
         throw new ApiError(409, "Admin is already registered for this user");
     }
     
     const newAdmin = await Admin.create({
-        user,
+        user : req.user._id,
         role,
         gender,
         contactInfo: {

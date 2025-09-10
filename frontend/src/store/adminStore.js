@@ -13,7 +13,7 @@ const adminStore = create((set) => ({
 
   // Register admin
   registerAdmin: async (data) => {
-    set({ isLoading: true, error: null });
+    set({ isLoading: true, error: null, message: null });
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/admin/register`,
@@ -29,11 +29,10 @@ const adminStore = create((set) => ({
       set({
         isLoading: false,
         message: response.data.message,
-        admin: null,
-        isAuthenticated: false,
+        admin: response.data.data,
       });
 
-      return response.data.data;
+      return response.data.data; // Return the created admin
     } catch (error) {
       set({
         error: error.response?.data?.message || error.message,
@@ -59,8 +58,8 @@ const adminStore = create((set) => ({
 
       // Store tokens in localStorage
       if (response.data.accessToken) {
-        localStorage.setItem("token", response.data.accessToken);
-        localStorage.setItem("refreshToken", response.data.refreshToken);
+        localStorage.setItem("adminToken", response.data.accessToken);
+        localStorage.setItem("adminRefreshToken", response.data.refreshToken);
       }
 
       set({
@@ -70,7 +69,7 @@ const adminStore = create((set) => ({
         message: response.data.message,
       });
 
-      return response.data.admin;
+      return response.data; // Return the full response data
     } catch (error) {
       set({
         isLoading: false,
@@ -175,7 +174,7 @@ const adminStore = create((set) => ({
 
   // Generate admin password
   generatePassword: async () => {
-    set({ isLoading: true, error: null });
+    set({ isLoading: true, error: null, message: null });
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/admin/password/generate`,
@@ -192,7 +191,7 @@ const adminStore = create((set) => ({
         adminIdPass: response.data.data,
       });
 
-      return response.data.data;
+      return response.data.data; // Return credentials {username, password}
     } catch (error) {
       set({
         isLoading: false,
